@@ -1,0 +1,87 @@
+#include <iostream>
+
+void printArray2D(int** arr, unsigned int rows, unsigned int cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			std::cout << arr[i][j] << ' ';
+		}
+		std::cout << std::endl;
+	}
+}
+
+int** createArray2D(unsigned int rows, unsigned int cols)
+{
+	int** arr = new int* [rows];
+	for (int i = 0; i < rows; i++)
+	{
+		arr[i] = new int[cols] {};
+	}
+	return arr;
+}
+
+void deleteArray2D(int** arr, unsigned int rows)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		delete[] arr[i];
+	}
+	delete[] arr;
+}
+
+void fillArray2D(int** arr, unsigned int rows, unsigned int cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		std::cout << "Row # " << i << std::endl;
+		for (int j = 0; j < cols; j++)
+		{
+			std::cout << "Cols # " << j << std::endl;
+			std::cout << "Enter value: ";
+			std::cin >> arr[i][j];
+		}
+	}
+}
+
+void pushRowToArray2D(int**& arr, unsigned int rows, unsigned int cols)
+{
+	int* new_row = new int[cols] {};
+	int** new_arr = new int* [rows + 1];
+	int position{};
+	std::cout << "Where to put new row: ";
+	std::cin >> position;
+	new_arr[position] = new_row;
+	for (int i = 0; i < position; i++)
+	{
+		new_arr[i] = arr[i];
+	}
+	for (int j = 0; j < cols; ++j)
+	{
+		new_arr[position][j] = new_row[j];
+	}
+	for (int i = position; i < rows; ++i)
+	{
+		new_arr[i + 1] = arr[i];
+	}
+	delete[] arr;
+	arr = new_arr;
+}
+
+int main()
+{
+	unsigned int rows, cols;
+	std::cout << "Enter rows: ";
+	std::cin >> rows;
+	std::cout << "Enter cols: ";
+	std::cin >> cols;
+	int** arr = createArray2D(rows, cols);
+	fillArray2D(arr, rows, cols);
+	printArray2D(arr, rows, cols);
+	std::cout << "===============================\n";
+	pushRowToArray2D(arr, rows, cols);
+	printArray2D(arr, rows + 1, cols);
+	deleteArray2D(arr, rows + 1);
+	return 0;
+}
